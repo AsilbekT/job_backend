@@ -3,6 +3,10 @@ from accounts.auth.views import (
     ObtainAuthToken,
     registration_view
 )
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter()
+
 
 
 app_name = 'accounts'

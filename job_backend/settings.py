@@ -25,14 +25,18 @@ SECRET_KEY = 'django-insecure-!wyiu&m^65v4cb$oiasn#o4%a%9)ye!r@5ff9_fp5xti32flv5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 AUTH_USER_MODEL = 'accounts.Account'
+CSRF_TRUSTED_ORIGINS = ["https://6a1e-213-230-114-160.ngrok-free.app"]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://localhost:8000",
     "http://localhost:8080",
+    "http://localhost:5173",
+    "http://localhost:3000",
+]
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000',
 ]
 CORS_ALLOW_ALL_ORIGINS = True
 # Application definition
@@ -61,6 +65,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [

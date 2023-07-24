@@ -1,10 +1,20 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from .models import Job, Company, Catagory, Application
-from .serializers import JobSerializer, CompanySerializer, CatagorySerializer, ApplicationSerializer
 from django.utils.decorators import method_decorator
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .utils import token_required
+from rest_framework.permissions import IsAuthenticated
+from api.models import Account
+from rest_framework.decorators import action
+
+from .serializers import (
+    JobSerializer, CompanySerializer, CatagorySerializer, ApplicationSerializer, AccountSerializer,
+    EducationSerializer, WorkExperienceSerializer, AwardSerializer, SkillSerializer
+)
+from .models import (
+    Job, Company, Catagory, Application,
+    Education, WorkExperience, Award, Skill
+)
 
 # @method_decorator(token_required, name='dispatch')
 class JobViewSet(viewsets.ModelViewSet):
@@ -71,3 +81,44 @@ class ApplicationViewSet(viewsets.ModelViewSet):
                             status=status.HTTP_403_FORBIDDEN)
         return super().partial_update(request, pk)
 
+from django.http import Http404
+
+class AccountViewSet(viewsets.ModelViewSet):
+    serializer_class = AccountSerializer
+    permission_classes = [IsAuthenticated]  # Require user to be authenticated
+
+    def get_queryset(self):
+        # Only return the authenticated user's account
+        return Account.objects.filter(id=self.request.user.id)
+
+    @action(detail=True, methods=['patch'], permission_classes=[IsAuthenticated])
+    def upload_files(self, request, pk=None):
+        try:
+            account = self.get_object()
+            serializer = self.get_serializer(account, data=request.data, partial=True)  # Set partial=True to update a part of the Account
+            if serializer.is_valid():
+                serializer.save()
+                return Response({"detail": "Account updated successfully."})
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Http404:
+            return Response({"detail": f"Account with ID {pk} not found."}, status=status.HTTP_404_NOT_FOUND)
+
+       
+
+
+class EducationViewSet(viewsets.ModelViewSet):
+    queryset = Education.objects.all()
+    serializer_class = EducationSerializer
+
+class WorkExperienceViewSet(viewsets.ModelViewSet):
+    queryset = WorkExperience.objects.all()
+    serializer_class = WorkExperienceSerializer
+
+class AwardViewSet(viewsets.ModelViewSet):
+    queryset = Award.objects.all()
+    serializer_class = AwardSerializer
+
+class SkillViewSet(viewsets.ModelViewSet):
+    queryset = Skill.objects.all()
+    serializer_class = SkillSerializer

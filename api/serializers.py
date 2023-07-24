@@ -1,8 +1,11 @@
 from rest_framework import serializers
 from .models import Job, Company, Catagory, Application
+from api.models import Account
 from django.urls import reverse
 from django.utils import timezone
 import datetime
+from .models import Education, WorkExperience, Award, Skill
+
 
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
@@ -66,3 +69,47 @@ class ApplicationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Application
         fields = ['id', 'user', 'job', 'cv', 'date_applied']
+
+
+class AccountSerializer(serializers.ModelSerializer):
+    avatar = serializers.ImageField(required=False)
+    cv = serializers.FileField(required=False)
+    class Meta:
+        model = Account
+        fields = [
+            'id', 
+            'email', 
+            'username', 
+            'date_joined', 
+            'avatar', 
+            'last_login', 
+            'cv', 
+            'is_admin', 
+            'is_active', 
+            'is_staff', 
+            'is_superuser',
+            'is_employer'
+            ]
+
+
+
+
+class EducationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Education
+        fields = '__all__'
+
+class WorkExperienceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WorkExperience
+        fields = '__all__'
+
+class AwardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Award
+        fields = '__all__'
+
+class SkillSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Skill
+        fields = '__all__'

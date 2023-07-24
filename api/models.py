@@ -61,3 +61,31 @@ class Application(models.Model):
 
     def __str__(self) -> str:
         return self.user.username
+    
+
+
+class Education(models.Model):
+    degree = models.CharField(max_length=200)
+    institution = models.CharField(max_length=200)
+    start_year = models.IntegerField()
+    end_year = models.IntegerField()
+    description = models.TextField()
+    user = models.ForeignKey(Account, on_delete=models.CASCADE)
+
+class WorkExperience(models.Model):
+    job_title = models.CharField(max_length=200)
+    company = models.CharField(max_length=200)
+    start_year = models.IntegerField()
+    end_year = models.IntegerField()
+    description = models.TextField()
+    user = models.ForeignKey(Account, on_delete=models.CASCADE)
+
+class Award(models.Model):
+    title = models.CharField(max_length=200)
+    year = models.IntegerField()
+    description = models.TextField()
+    user = models.ForeignKey(Account, on_delete=models.CASCADE)
+
+class Skill(models.Model):
+    name = models.CharField(max_length=100)
+    user = models.ForeignKey(Account, on_delete=models.CASCADE)
