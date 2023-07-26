@@ -47,7 +47,7 @@ class CatagoryViewSet(viewsets.ModelViewSet):
     # detail view
     def retrieve(self, request, pk=None):
         company = Catagory.objects.get(id=pk)
-        serializer = CompanySerializer(company)
+        serializer = CatagorySerializer(company)
         return Response(serializer.data)
 
 @method_decorator(token_required, name='dispatch')
