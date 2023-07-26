@@ -24,7 +24,7 @@ class JobViewSet(viewsets.ModelViewSet):
     # detail view
     def retrieve(self, request, pk=None):
         job = Job.objects.get(id=pk)
-        serializer = JobSerializer(job)
+        serializer = JobSerializer(job, context={'request': request})
         return Response(serializer.data)
 
 
